@@ -7,7 +7,7 @@ initLoc1 = [-100,-100];
 initLoc2 = [100,100];
 done1 = false;
 done2 = false;
-%map = generateMap();
+map = generateMap();
 for i = 1:10000000 
     tic;
     %[path1, tree1, done1] = algorithm1(map, path1, tree1, initLoc1)
