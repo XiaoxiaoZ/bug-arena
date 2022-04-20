@@ -1,0 +1,17 @@
+
+path1 = [];
+path2 = [];
+time1 = 0;
+time2 = 0;
+%map = generateMap();
+for i = 1:10000000 
+tic;
+%[path1, tree1, done] = algorithm1(map)
+pause(2)
+time1 = time1 + toc
+tic;
+%algorithm 2
+%[path2, tree, done] = algorithm1(map)
+pause(3)
+time2 = time2 +toc
+end
