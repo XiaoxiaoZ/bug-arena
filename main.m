@@ -23,7 +23,7 @@ pause;
 for i = 1:10000000 
     if done1 == false
         tic;
-        [path1, tree1, done1] = algorithm1(map, path1, tree1, start1, goal)
+        [path1, tree1, done1] = ACO(map, path1, tree1, start1, goal)
         time1 = time1 + toc;
     else
         plot(path1(:,1),path1(:,2),'r')
