@@ -14,18 +14,9 @@ classdef MazeSolver
             %   Detailed explanation goes here
             disp("initing ants")
             for i=1:numberOfAnts
-                obj.Ants(end+1) = ant(i);
+                obj.Ants(end+1) = ant(i,block(1,25));
             end
-            [m,n] = size(map);
-            disp("initing map")
-            for i = 1:m
-                for l = 1:n
-                    obj.Map(end+1) = getBlockFromLocation(i,l,map);
-                end
-            end
-            disp("initing edges")
-            
-            
+            [m,n] = size(map);   
         end
         
         function outputArg = method1(obj,inputArg)

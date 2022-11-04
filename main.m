@@ -1,5 +1,5 @@
 clear
-start1 = [1,250];
+start1 = [1,25];
 start2 = [570,250];
 goal = [285,250];
 path1 = [10,20;20,30;30,50];
@@ -12,7 +12,7 @@ done1 = false;
 done2 = false;
 %map = generateMap();
 map = generateEasyMap();
-map(183,500)
+%map(183,500)
 fmap = figure;
 imshow(map')
 hold on

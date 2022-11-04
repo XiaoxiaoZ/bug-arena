@@ -9,12 +9,11 @@ classdef edge
     end
     
     methods
-        function obj = edge(From, To, Tau)
+        function obj = edge(From, To)
             %UNTITLED2 Construct an instance of this class
             %   Detailed explanation goes here
             obj.From = From;
             obj.To = To;
-            obj.Tau = Tau;
         end
     end
 end
