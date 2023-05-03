@@ -5,11 +5,10 @@ initPoint = [1,1];
 goalPoint = size(map);
 
 line=moveTowords([1,1],goalPoint);
-line(findContact(line,map),:)
-
-
+contact = line(findContact(line,map),:);
 hold on 
 plot(line(:,1),line(:,2))
+scatter(contact(1),contact(2))
 
 function map = createMap(numOfObj)
 %Generate a map in size pixel 150x250 with number of objects given
@@ -26,7 +25,7 @@ diff=goal-now;
 k = diff(2)/diff(1);
 line = [];
 for i=now(1):goal(1)
-    line=[line;i,round(now(2)+(i-now(1))*k)]
+    line=[line;i,round(now(2)+(i-now(1))*k)];
 end
 end
 
