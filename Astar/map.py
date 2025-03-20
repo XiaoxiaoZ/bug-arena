@@ -89,12 +89,17 @@ def astar_search(G, start, goal):
 #route = nx.astar_path(G, start_node, end_node, heuristic=lambda u, v: euclidean_distance(G, u, v), weight='length')
 route = astar_search(G, start_node, end_node)
 
-# Visualize the route
-fig, ax = ox.plot_graph_route(
-    G, route,
-    route_linewidth=3,  # Make the route more visible
-    route_color='red',   # Highlight the route in red
-    node_size=0,         # Hide nodes for clarity
-    edge_color='gray',   # Normal roads are gray
-    bgcolor='white'      # White background for contrast
-)
+# Plot the route if found
+if route:
+    # Visualize the route
+    fig, ax = ox.plot_graph_route(
+        G, route,
+        route_linewidth=3,  # Make the route more visible
+        route_color='red',   # Highlight the route in red
+        node_size=0,         # Hide nodes for clarity
+        edge_color='gray',   # Normal roads are gray
+        bgcolor='white'      # White background for contrast
+    )
+else:
+    print("No path found.")
+
