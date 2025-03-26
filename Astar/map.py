@@ -22,22 +22,25 @@ print(ox.__version__)
 ox.settings.log_console = True  # See logs for debugging
 # Define the city or area you want to extract
 G = ox.graph_from_place("Manhattan, New York, USA", network_type="drive")
-
+# # Define start and end points (latitude, longitude)
+start_point = (40.8457, -73.9369)  # Empire State Building
+end_point = (40.730610, -73.99)    # East Village
+#G = ox.graph_from_place("Trollhättan, Sweden", network_type="drive")
+#start_point = (58.3004, 12.1444)  # Empire State Building
+#end_point = (58.1401, 12.4198)    # East Village
 
 # Remove unsupported attributes before saving
 for u, v, data in G.edges(data=True):
     data.pop("geometry", None)  # Remove 'geometry' to avoid GraphML errors
 
 # Save graph to GraphML
-ox.save_graphml(G, "city_roads.graphml")
+ox.save_graphml(G, "Manhattan_city_roads.graphml")
 print("Graph saved successfully.")
 
 # Plot the graph
 #ox.plot_graph(G)
 
-# Define start and end points (latitude, longitude)
-start_point = (40.8457, -73.9369)  # Empire State Building
-end_point = (40.730610, -73.935242)    # East Village
+
 
 # Find nearest nodes
 #pip install scikit-learn
@@ -137,14 +140,6 @@ def a_star(graph: Graph[T], start: T, goal: T, heuristic: Callable[[T, T], float
     
     return None  # No path found
 
-def reconstruct_path(came_from: Dict[T, T], current: T, cost: int) -> Tuple[List[T], int]:
-    """Reconstructs the path from start to goal."""
-    path = [current]
-    while current in came_from:
-        current = came_from[current]
-        path.append(current)
-    path.reverse()
-    return path, cost
 # Compute shortest path using A* algorithm
 #route = nx.astar_path(G, start_node, end_node, heuristic=lambda u, v: euclidean_distance(G, u, v), weight='length')
 #route = astar_search(G, start_node, end_node)
