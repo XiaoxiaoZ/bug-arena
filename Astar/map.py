@@ -6,6 +6,17 @@ import math
 import osmnx as ox
 import networkx as nx
 import heapq
+from typing import TypeVar, Generic, Dict, List, Tuple, Optional, Callable
+
+T = TypeVar('T')  # Generic type for nodes
+
+class Graph(Generic[T]):
+    """Generic Graph class with a method to get neighbors."""
+    def neighbors(self, node: T) -> List[Tuple[T, int]]:
+        raise NotImplementedError("Subclasses must implement this method")
+    def get_edge_weight(self, u: T, v: T) -> float:
+        """Should return the weight of the edge between u and v."""
+        raise NotImplementedError("Subclasses must implement this method")
 
 print(ox.__version__)
 ox.settings.log_console = True  # See logs for debugging
@@ -36,7 +47,7 @@ def euclidean_distance(G, node1, node2):
     x1, y1 = G.nodes[node1]['x'], G.nodes[node1]['y']
     x2, y2 = G.nodes[node2]['x'], G.nodes[node2]['y']
     return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
-
+# Common way
 def astar_search(G, start, goal):
     """A* algorithm to find the shortest path in a graph."""
     
@@ -85,10 +96,59 @@ def astar_search(G, start, goal):
                 heapq.heappush(open_set, (f_score[neighbor], neighbor, path))
     
     return None  # No path found
+
+def a_star(graph: Graph[T], start: T, goal: T, heuristic: Callable[[T, T], float]) -> Optional[List[T]]:
+    """A* algorithm to find the shortest path in a graph."""
+    
+    # Priority queue (f_score, node, path)
+    open_set = []
+    heapq.heappush(open_set, (heuristic(start, goal), start, []))
+    
+    # Cost tracking
+    g_score: Dict[T, float] = {start: 0}
+    visited = set()
+
+    while open_set:
+        _, current, path = heapq.heappop(open_set)  # Node with lowest f_score
+        
+        if current in visited:
+            continue
+        visited.add(current)
+
+        path = path + [current]  # Extend path
+        
+        if current == goal:
+            return path  # Return shortest path
+        
+        for neighbor in graph.neighbors(current):
+            if neighbor in visited:
+                continue
+            # Get actual travel cost (edge weight)
+            edge_data = G.get_edge_data(current, neighbor, default={})
+            travel_cost = edge_data[0].get("length", 1)  # Default 1 if no length
+            
+            tentative_g_score = g_score[current] + travel_cost
+            
+            if tentative_g_score < g_score.get(neighbor, float('inf')):
+                g_score[neighbor] = tentative_g_score
+                f_score = tentative_g_score + heuristic(neighbor, goal)
+                
+                heapq.heappush(open_set, (f_score, neighbor, path))
+    
+    return None  # No path found
+
+def reconstruct_path(came_from: Dict[T, T], current: T, cost: int) -> Tuple[List[T], int]:
+    """Reconstructs the path from start to goal."""
+    path = [current]
+    while current in came_from:
+        current = came_from[current]
+        path.append(current)
+    path.reverse()
+    return path, cost
 # Compute shortest path using A* algorithm
 #route = nx.astar_path(G, start_node, end_node, heuristic=lambda u, v: euclidean_distance(G, u, v), weight='length')
-route = astar_search(G, start_node, end_node)
-
+#route = astar_search(G, start_node, end_node)
+route = a_star(G, start_node, end_node, heuristic=lambda u, v: euclidean_distance(G, u, v))
 # Plot the route if found
 if route:
     # Visualize the route
