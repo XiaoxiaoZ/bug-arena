@@ -140,17 +140,6 @@ def a_star(graph: Graph[T], start: T, goal: T, heuristic: Callable[[T, T], float
     
     return None  # No path found
 
-<<<<<<< HEAD
-def reconstruct_path(came_from: Dict[T, T], current: T, cost: int) -> Tuple[List[T], int]:
-    """Reconstructs the path from start to goal."""
-    path = [current]
-    while current in came_from:
-        current = came_from[current]
-        path.append(current)
-    path.reverse()
-    return path, cost
-=======
->>>>>>> b7e9c4922695081d39c3a1c80be09ca7c344c605
 # Compute shortest path using A* algorithm
 #route = nx.astar_path(G, start_node, end_node, heuristic=lambda u, v: euclidean_distance(G, u, v), weight='length')
 #route = astar_search(G, start_node, end_node)
